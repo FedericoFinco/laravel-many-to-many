@@ -64,16 +64,32 @@
                             <option @selected($project->technology == $technology) value="{{ $technology }}">{{ $technology->name }}</option>
                         @endforeach
                     </select> --}}
-
+                    @dump( old('technologies') )
+                    @dump( $project->technologies->pluck('id')->toArray() )
                     @foreach ($technologies as $i => $technology)
                         <div class="form-check">
                             <input type="checkbox" value="{{$technology->id}}"  name="technologies[]" id="tech{{$i}}" class="form-check-input" 
-                            @if (old('technologies') && in_array($technology->id, old('technologies'))) checked
+                            {{-- @if (old('technologies') && in_array($technology->id, old('technologies'))) checked
 
                             @elseif (!old('technologies') && $project->technologies->contains($technology))
-                            checked @endif>
+                            checked @endif> --}}
+                            {{-- {{in_array( $technology->id, old( 'technologies', [] ) ) ? "checked" : "" }} --}}
+
+                            {{-- @checked( old('technologies') ? in_array( $technology->id, old('technologies') ) : in_array( $technology->id , $project->technologies->pluck('id')->toArray()) )
+                            versione base, senza alcun tipo di semplificazione.
+
+                            qua ho raggruppato gli aghi ed ho messo un ternario per selezionare il pagliaio.
+                            @checked( in_array( $technology->id, old('technologies') ? old('technologies') : $project->technologies->pluck('id')->toArray() ) ) --}}
+                            
+                            {{-- ho convertito gli aghi allo stesso tipo di dato per avere un solo "in array" e poi con il ?? null coalescence operator ho detto se c'è old fai la senno dall'altra parte --}}
+                            @checked( in_array( $technology->id, old('technologies') ?? $project->technologies->pluck('id')->toArray() ) )
                             >
+
+                            {{-- https://www.youtube.com/watch?v=9t79PDqXjok  tipo senior che fa refactioring del codice --}}
+                            
                             <label for="tech{{$i}}" class="form-check-label">{{$technology->name}}</label>
+
+                            
 
                             
                             {{-- @checked($project->technologies->contains($technology))
