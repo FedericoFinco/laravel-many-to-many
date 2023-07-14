@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 use App\Models\Technology;
 use Faker\Generator as faker; 
+use Illuminate\Support\Facades\Schema;
 
 
 
@@ -18,6 +19,10 @@ class TechnologySeeder extends Seeder
      */
     public function run(Faker $faker)
     {
+
+        Schema::disableForeignKeyConstraints();
+        Technology::truncate();
+        Schema::enableForeignKeyConstraints();
         for ($i=0; $i < 10; $i++) { 
             $newTech = new Technology();
             $newTech->name = $faker->words(2, true);

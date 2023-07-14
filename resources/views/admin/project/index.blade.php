@@ -7,7 +7,9 @@
             <div class="col">
                     
                 <div class="card" style="width: 18rem;">
-                    <img src="{{$project->img}}" class="card-img-top" alt="...">
+                    @if ($project->img)
+                        <img src="{{asset("storage/".$project->img) }}" class="card-img-top" alt="...">
+                    @endif
                     <div class="card-body">
                         <h5 class="card-title">{{$project->title}}</h5>
                         <p class="card-text">{{$project->description}}</p>

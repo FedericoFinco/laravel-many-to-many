@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="container my-3">
-    @php
+    {{-- @php
         dump($project);
         dump($project->technologies[2])
-    @endphp
+    @endphp --}}
     <h1>edit project</h1>
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -18,7 +18,7 @@
     @endif
     <div class="row g-4 py-4">
         <div class="col">
-            <form action="{{ route('admin.projects.update', $project) }}" method="post" class="need-validation">
+            <form action="{{ route('admin.projects.update', $project) }}" method="post" class="need-validation" enctype="multipart/form-data">
                 @csrf
                 @method("PUT")
             
@@ -34,11 +34,11 @@
                     <div class="invalid-feedback">{{$message}}</div>
                 @enderror
 
-                <label for="name">img</label>
+                {{-- <label for="name">img</label>
                 <input class="form-control @error('img') is-invalid @enderror" type="text" name="img" value="{{ old("img") ?? $project->img}}">
                 @error("thumb")
                     <div class="invalid-feedback">{{$message}}</div>
-                @enderror
+                @enderror --}}
 
                 <label for="name">link_to_project</label>
                 <input class="form-control @error('link_to_project') is-invalid @enderror" type="text" name="link_to_project" value="{{ old("link_to_project") ?? $project->link_to_project}}">
@@ -101,6 +101,17 @@
                     @endforeach
 
 
+                    {{-- value="{{ old("img") ?? $project->img}} --}}
+
+                    <label for="name">img</label>
+                    @if ($project->img)
+                    <img class="img-fluid" src="{{asset("storage/".$project->img) }}">
+                        
+                    @endif
+                <input class="form-control @error('img') is-invalid @enderror" type="file" name="img" >
+                @error("thumb")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
 
                 <input class="form-control mt-4 btn btn-primary" type="submit" value="Invia">
             </form>

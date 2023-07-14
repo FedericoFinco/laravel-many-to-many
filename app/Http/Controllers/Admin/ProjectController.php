@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Technology;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -39,9 +40,15 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $data = $request -> validated();
+
         $newProject= new Project();
         $newProject -> fill($data);
         $newProject -> save();
+
+        $img_path = Storage::put("uploads", $data['img']);
+        $data['img'] = $img_path;
+
+        return to_route("admin.projects.show");
     }
 
     /**
@@ -80,9 +87,24 @@ class ProjectController extends Controller
 
         $data = $request -> validated();
         
+        // $img_path = $data["image"]->store("uploads");
+        if (isset($data['img'])) {
+            $img_path = Storage::put("uploads", $data['img']);
+            $data['img'] = $img_path;
+        }
+
+
+
         $project -> fill($data);
+
+        if (!isset($data["technologies"])) {
+            $data["technologies"] = [];
+        }
+
         $project->technologies()->sync( $data["technologies"] );
+
         $project -> update();
+
         
         
         return to_route("admin.projects.index");

@@ -26,7 +26,7 @@ class ProjectRequest extends FormRequest
         return [
             'title' => "required | min:3 | max : 100",
             'description' => "required | min:3 ",
-            'img' => "nullable | url ",
+            'img' => "nullable | image | max:10240 ",
             'link_to_project' => "nullable | url ",
             "technologies" => "",
         ];
